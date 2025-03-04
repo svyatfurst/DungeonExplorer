@@ -14,10 +14,6 @@ namespace DungeonExplorer
             // Initialize the game with one room and one player
             player = new Player(name, 100);
             currentRoom = new Room(room);
-    }
-        private void fight()
-        {
-
         }
         public void Start()
         {
