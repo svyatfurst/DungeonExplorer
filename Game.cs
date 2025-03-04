@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Media;
 
 namespace DungeonExplorer
@@ -8,9 +9,14 @@ namespace DungeonExplorer
         private Player player;
         private Room currentRoom;
 
-        public Game()
+        public Game(string name, string room)
         {
             // Initialize the game with one room and one player
+            player = new Player(name, 100);
+            currentRoom = new Room(room);
+    }
+        private void fight()
+        {
 
         }
         public void Start()

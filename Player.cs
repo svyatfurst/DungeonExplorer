@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
+        public string Name { get ; private set; }
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
 
@@ -15,7 +16,8 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            inventory.Add(item);
+            Console.WriteLine($"{item} has been successfuly added to the inventory!");
         }
         public string InventoryContents()
         {
