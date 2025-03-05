@@ -31,7 +31,7 @@ namespace DungeonExplorer
                 "sword",
                 "shield",
                 "bow"
-            }
+            };
 
             Console.Write("Please, enter your nickname: ");
             string Name = Console.ReadLine();
@@ -42,14 +42,19 @@ namespace DungeonExplorer
                 "2 - Abandoned Laboratory\n" +
                 "3 - Coronation Hall\n"
                 );
-            int room;
+            int room = -1;
             do
             {
-                Console.Write("Your input: ");
-                room = int.Parse(Console.ReadLine());
+                try
+                {
+                    Console.Write("Your input: ");
+                    room = int.Parse(Console.ReadLine());
+                }catch(Exception e) 
+                { 
+                    Console.WriteLine("Wrong choice, try again"); 
+                    continue; 
+                }
             } while (
-                !int.TryParse(Console.ReadLine(), out room)
-                    ||
                 !new List<int> { 1, 2, 3 }.Contains(room)
             );
 
