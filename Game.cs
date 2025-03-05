@@ -39,8 +39,6 @@ namespace DungeonExplorer
                     Console.Write("Your input: ");
                     choice = int.Parse(Console.ReadLine());
                 } while (
-                !int.TryParse(Console.ReadLine(), out choice)
-                    ||
                 !new List<int> { 1, 2, 3 }.Contains(choice)
             );
             }

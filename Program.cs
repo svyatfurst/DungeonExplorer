@@ -34,7 +34,7 @@ namespace DungeonExplorer
             };
 
             Console.Write("Please, enter your nickname: ");
-            string Name = Console.ReadLine();
+            string Name = Console.Read();
 
             Console.Write(
                 "What room do you want to enter?\n" +
