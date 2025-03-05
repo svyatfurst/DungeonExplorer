@@ -35,8 +35,8 @@ namespace DungeonExplorer
                 "Crown",
     
             };
-            string[] music = { 
-                "ballroom"
+            string[] music = {
+                "ballroom.wav"
             };
 
             Console.Write("Please, enter your nickname: ");

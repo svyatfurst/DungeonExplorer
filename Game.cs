@@ -10,7 +10,7 @@ namespace DungeonExplorer
         private Player player;
         private Room currentRoom;
         private string roomItem;
-        private string music;
+        private string roomMusic;
 
         public Game(string name, string room, string item, string music)
         {
@@ -18,7 +18,7 @@ namespace DungeonExplorer
             player = new Player(name, 50);
             currentRoom = new Room(room);
             roomItem = item;
-            music = music;
+            roomMusic = music;
         }
         public void WriteCentered(string text)
         {
@@ -41,7 +41,7 @@ namespace DungeonExplorer
             );
             while (playing)
             {
-                SoundPlayer player = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{music}.wav"));
+                SoundPlayer player = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, roomMusic));
                 player.Play();
                 // Code your playing logic here
                 Console.WriteLine(
