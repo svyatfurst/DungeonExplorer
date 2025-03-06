@@ -37,7 +37,7 @@ namespace DungeonExplorer
             // Change the playing logic into true and populate the while loop
             bool playing = true;
             this.WriteCentered(
-                $"You woke up in the {currentRoom.GetDescription()}"
+                $"You woke up in the\n{currentRoom.GetDescription()}"
             );
             while (playing)
             {
