@@ -31,26 +31,27 @@ namespace DungeonExplorer
             };
 
             string[] items = {
-                "Crown",
+                "Bootle of fine wine",
                 "Potion",
                 "Crown",
-    
             };
             string[] music = {
-                "ballroom.wav"     
+                "ballroom.wav",
+                "laboratory.wav",
+                "coronation hall.wav"
             };
 
             Console.Write("Please, enter your nickname: ");
             string Name = Console.ReadLine();
 
+            int room = -1;
+            string choice;
             Console.WriteLine(
                 "What room do you want to enter?\n" +
                 "1 - Ancient Ballroom\n" +
                 "2 - Abandoned Laboratory\n" +
                 "3 - Coronation Hall"
                 );
-            int room = -1;
-            string choice;
             do
             {
                 Console.Write("Your input: ");

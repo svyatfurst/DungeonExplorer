@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Media;
+using System.Threading;
 
 namespace DungeonExplorer
 {
@@ -16,7 +17,7 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player
             player = new Player(name, 50);
-            currentRoom = new Room(room);
+            currentRoom = new Room(room, item);
             roomItem = item;
             roomMusic = music;
         }
@@ -39,16 +40,71 @@ namespace DungeonExplorer
             this.WriteCentered(
                 $"You woke up in the\n{currentRoom.GetDescription()}"
             );
+            Action[] options = new Action[] {
+                () => {
+                    string currentItem = currentRoom.GetRoomItem();
+                    if(currentItem != "none"){
+                        Console.WriteLine($"After some time you found {currentItem}\nAre you willing to take it?");
+                        Console.WriteLine("1 - Yes\n2 - No");
+                        int action = -1;
+                        string choice;
+                        do
+                        {
+                            Console.Write("Your input: ");
+                            choice = Console.ReadLine();
+                            if (int.TryParse(choice, out action))
+                            {
+                                action = int.Parse(choice);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        } while (
+                            !new List<int> { 1, 2}.Contains(action)
+                        );
+                        if(action == 1){
+                            player.PickUpItem(currentItem);
+                            currentRoom.RemoveItem();
+                        }
+                    }else
+                        Console.WriteLine("There are no items left.");
+                },
+                () => {
+                    Console.WriteLine($"Your inventory contens: {player.InventoryContents()}");
+                },
+                () => {
+                    Console.WriteLine($"You currently posses {player.GetHealth()} health");
+                },
+                () =>
+                {
+                    Random rnd = new Random();
+                    if(rnd.Next(0, 2) == 1)
+                    {
+                        Console.WriteLine("You successfuly stabbed yourself, well done mate!");
+                        player.TakeDamage(20);
+                    }
+                    else
+                        Console.WriteLine("You missed, dumbass!");
+                }
+            };
+            SoundPlayer musicPlayer = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, roomMusic));
             while (playing)
             {
-                SoundPlayer player = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, roomMusic));
-                player.Play();
+                musicPlayer.Play();
                 // Code your playing logic here
+                if (player.GetHealth() == 0)
+                {
+                    playing = false;
+                    break;
+                }
+
                 Console.WriteLine(
                     "What do you want to do?\n" +
-                    "1 - Look around\n" +
+                    "1 - Look Around\n" +
                     "2 - View Inventory\n" +
-                    "3 - View Stats"
+                    "3 - View Stats\n" +
+                    "4 - Stab Yourself" 
                 );
                 int action = -1;
                 string choice;
@@ -65,9 +121,11 @@ namespace DungeonExplorer
                         continue;
                     }
                 } while (
-                    !new List<int> { 1, 2, 3 }.Contains(action)
+                    !new List<int> { 1, 2, 3, 4 }.Contains(action)
                 );
-            }
+                options[action - 1]();
+            };
+            Console.WriteLine("You died a horrible death...\nBut yo! Thanks for playing!");
         }
     }
 }

@@ -23,5 +23,18 @@ namespace DungeonExplorer
         {
             return string.Join(", ", inventory);
         }
+        public void TakeDamage(int damage)
+        {
+            if(Health - damage > 0)
+                Health -= damage;
+            else
+                Health = 0;
+
+            Console.WriteLine($"You received {damage} damage. Now you have {Health}");
+        }
+        public int GetHealth()
+        {
+            return Health;
+        }
     }
 }
