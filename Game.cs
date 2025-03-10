@@ -8,11 +8,13 @@ namespace DungeonExplorer
 {
     internal class Game
     {
+        //Declaring class fields
         private Player player;
         private Room currentRoom;
         private string roomItem;
         private string roomMusic;
 
+        //Class constructor
         public Game(string name, string room, string item, string music)
         {
             // Initialize the game with one room and one player
@@ -21,6 +23,7 @@ namespace DungeonExplorer
             roomItem = item;
             roomMusic = music;
         }
+        //Function to output text in the center of the console. Used for room description
         public void WriteCentered(string text)
         {
             int width = Console.WindowWidth;
@@ -37,10 +40,16 @@ namespace DungeonExplorer
         {
             // Change the playing logic into true and populate the while loop
             bool playing = true;
+
+            //Outputting the room description in the center
             this.WriteCentered(
                 $"You woke up in the\n{currentRoom.GetDescription()}"
             );
+
+            //Declaring the array varibale that stores all actions you can do in the game
             Action[] options = new Action[] {
+
+                //Looking around(looking for items)
                 () => {
                     string currentItem = currentRoom.GetRoomItem();
                     if(currentItem != "none"){
@@ -70,12 +79,17 @@ namespace DungeonExplorer
                     }else
                         Console.WriteLine("There are no items left.");
                 },
+                //Viewing inventory
                 () => {
                     Console.WriteLine($"Your inventory contens: {player.InventoryContents()}");
                 },
+
+                //Viewing health
                 () => {
                     Console.WriteLine($"You currently posses {player.GetHealth()} health");
                 },
+
+                //Trying to stab yourself(slowly ending the game)
                 () =>
                 {
                     Random rnd = new Random();
@@ -88,10 +102,16 @@ namespace DungeonExplorer
                         Console.WriteLine("You missed, dumbass!");
                 }
             };
+
+            //Declaring the SoundPlayer instance to play the music
             SoundPlayer musicPlayer = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, roomMusic));
+            
+            //Game starts
             while (playing)
             {
+                //Music starts playing on the start of iteration
                 musicPlayer.Play();
+
                 // Code your playing logic here
                 if (player.GetHealth() == 0)
                 {
