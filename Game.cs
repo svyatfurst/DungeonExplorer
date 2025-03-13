@@ -6,24 +6,37 @@ using System.Threading;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// Represents the main game logic for Dungeon Explorer.
+    /// </summary>
     internal class Game
     {
-        //Declaring class fields
+        // Declaring class fields
         private Player player;
         private Room currentRoom;
         private string roomItem;
         private string roomMusic;
 
-        //Class constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game"/> class.
+        /// </summary>
+        /// <param name="name">The name of the player.</param>
+        /// <param name="room">The name of the initial room.</param>
+        /// <param name="item">The item present in the room.</param>
+        /// <param name="music">The background music file for the room.</param>
         public Game(string name, string room, string item, string music)
         {
-            // Initialize the game with one room and one player
             player = new Player(name, 50);
             currentRoom = new Room(room, item);
             roomItem = item;
             roomMusic = music;
         }
-        //Function to output text in the center of the console. Used for room description
+
+        /// <summary>
+        /// Outputs text centered in the console.
+        /// Used for displaying the room description.
+        /// </summary>
+        /// <param name="text">The text to display.</param>
         public void WriteCentered(string text)
         {
             int width = Console.WindowWidth;
@@ -36,115 +49,103 @@ namespace DungeonExplorer
                 Console.WriteLine(new string(' ', leftPadding) + trimmedLine);
             }
         }
+
+        /// <summary>
+        /// Starts the game loop, allowing the player to interact with the game world.
+        /// </summary>
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
             bool playing = true;
 
-            //Outputting the room description in the center
-            this.WriteCentered(
-                $"You woke up in the\n{currentRoom.GetDescription()}"
-            );
+            // Outputting the room description in the center
+            this.WriteCentered($"You woke up in the\n{currentRoom.GetDescription()}");
 
-            //Declaring the array varibale that stores all actions you can do in the game
+            // Declaring the array variable that stores all possible actions
             Action[] options = new Action[] {
 
-                //Looking around(looking for items)
+                // Look around for items
                 () => {
                     string currentItem = currentRoom.GetRoomItem();
                     if(currentItem != "none"){
                         Console.WriteLine($"After some time you found {currentItem}\nAre you willing to take it?");
                         Console.WriteLine("1 - Yes\n2 - No");
-                        int action = -1;
                         string choice;
                         do
                         {
                             Console.Write("Your input: ");
                             choice = Console.ReadLine();
-                            if (int.TryParse(choice, out action))
-                            {
-                                action = int.Parse(choice);
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        } while (
-                            !new List<int> { 1, 2}.Contains(action)
-                        );
-                        if(action == 1){
+                        } while (!new List<string> { "1", "2"}.Contains(choice));
+                        if(choice == "1"){
                             player.PickUpItem(currentItem);
                             currentRoom.RemoveItem();
                         }
-                    }else
+                    } else {
                         Console.WriteLine("There are no items left.");
-                },
-                //Viewing inventory
-                () => {
-                    Console.WriteLine($"Your inventory contens: {player.InventoryContents()}");
+                    }
                 },
 
-                //Viewing health
+                // View inventory
                 () => {
-                    Console.WriteLine($"You currently posses {player.GetHealth()} health");
+                    Console.WriteLine($"Your inventory contents: {player.InventoryContents()}");
                 },
 
-                //Trying to stab yourself(slowly ending the game)
-                () =>
-                {
+                // View health stats
+                () => {
+                    Console.WriteLine($"You currently possess {player.GetHealth()} health");
+                },
+
+                // Attempt to stab yourself
+                () => {
                     Random rnd = new Random();
                     if(rnd.Next(0, 2) == 1)
                     {
-                        Console.WriteLine("You successfuly stabbed yourself, well done mate!");
+                        Console.WriteLine("You successfully stabbed yourself, well done mate!");
                         player.TakeDamage(20);
                     }
                     else
+                    {
                         Console.WriteLine("You missed, dumbass!");
+                    }
                 }
             };
 
-            //Declaring the SoundPlayer instance to play the music
+            // Declaring the SoundPlayer instance to play background music
             SoundPlayer musicPlayer = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, roomMusic));
-            
-            //Game starts
+
+            // Game loop
             while (playing)
             {
-                //Music starts playing on the start of iteration
+                // Play music at the start of each iteration
                 musicPlayer.Play();
 
-                // Code your playing logic here
+                // End the game if the player's health reaches zero
                 if (player.GetHealth() == 0)
                 {
                     playing = false;
                     break;
                 }
 
+                // Prompting the player for an action
                 Console.WriteLine(
                     "What do you want to do?\n" +
                     "1 - Look Around\n" +
                     "2 - View Inventory\n" +
                     "3 - View Stats\n" +
-                    "4 - Stab Yourself" 
+                    "4 - Stab Yourself"
                 );
-                int action = -1;
+
                 string choice;
                 do
                 {
                     Console.Write("Your input: ");
                     choice = Console.ReadLine();
-                    if (int.TryParse(choice, out action))
-                    {
-                        action = int.Parse(choice);
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                } while (
-                    !new List<int> { 1, 2, 3, 4 }.Contains(action)
-                );
-                options[action - 1]();
+                } while (!new List<string> { "1", "2", "3", "4" }.Contains(choice));
+
+                // Execute selected action
+                options[int.Parse(choice) - 1]();
             };
+
+            // End of game message
             Console.WriteLine("You died a horrible death...\nBut yo! Thanks for playing!");
         }
     }
