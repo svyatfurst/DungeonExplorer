@@ -1,4 +1,6 @@
-﻿namespace DungeonExplorer
+﻿using System.Collections.Generic;
+
+namespace DungeonExplorer
 {
     /// <summary>
     /// Represents a room in the Dungeon Explorer game.
@@ -10,55 +12,55 @@
         /// </summary>
         private string description;
 
+        public string Description 
+        { 
+            get => description; 
+            set => description = value; 
+        }
+        
         /// <summary>
         /// Stores the item available in the room.
         /// </summary>
-        private string roomItem;
+        private Item roomItem;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Room"/> class.
-        /// </summary>
-        /// <param name="description">The description of the room.</param>
-        /// <param name="item">The item present in the room.</param>
-        public Room(string description, string item)
+        public Item RoomItem { 
+            get => roomItem; 
+            set => roomItem = value; 
+        }
+
+
+        public List<Monster> monsters = new List<Monster>();
+
+
+        public Room(string description, Item item)
         {
             this.description = description;
-            this.RoomItem = item;
+            this.roomItem = item;
         }
 
-        /// <summary>
-        /// Gets or sets the item present in the room.
-        /// </summary>
-        public string RoomItem { get => roomItem; set => roomItem = value; }
-
-        /// <summary>
-        /// Retrieves the description of the room.
-        /// </summary>
-        /// <returns>A string representing the room's description.</returns>
-        public string GetDescription()
+        //Retrieves the item present in the room. If no item is available, returns "none".
+        public Item GetRoomItem()
         {
-            return description;
+            return roomItem;
         }
 
-        /// <summary>
-        /// Retrieves the item present in the room. If no item is available, returns "none".
-        /// </summary>
-        /// <returns>A string representing the room's item.</returns>
-        public string GetRoomItem()
-        {
-            if (RoomItem == null)
-            {
-                return "none";
-            }
-            return RoomItem;
-        }
-
-        /// <summary>
-        /// Removes the item from the room.
-        /// </summary>
+        // Removes the item from the room.
         public void RemoveItem()
         {
             this.RoomItem = null;
+        }
+
+        //Removes the first monster that equals to input
+        public void removeMonster(Monster monsterToRemove)
+        {
+            for(int i = 0; i < monsters.Count; i++)
+            {
+                if (monsters[i] == monsterToRemove)
+                {
+                    monsters.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }
