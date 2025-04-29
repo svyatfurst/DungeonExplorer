@@ -3,77 +3,37 @@ using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
-    /// <summary>
-    /// Represents a player in the Dungeon Explorer game.
-    /// </summary>
-    public class Player
+    // Represents a player in the Dungeon Explorer game.
+    public class Player : Creature
     {
-        /// <summary>
-        /// Gets the player's name.
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the player's current health.
-        /// </summary>
-        public int Health { get; private set; }
-
-        /// <summary>
-        /// Stores the player's inventory.
-        /// </summary>
-        private List<string> inventory = new List<string>();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Player"/> class.
-        /// </summary>
-        /// <param name="name">The name of the player.</param>
-        /// <param name="health">The initial health of the player.</param>
-        public Player(string name, int health)
+        //Stores the player's inventory.
+        public Inventory inventory = new Inventory();
+        private int strengthUpgrade;
+        public int StrengthUpgrade
         {
-            Name = name;
-            Health = health;
+            get => strengthUpgrade; 
+            set => strengthUpgrade = value;
+        }
+        private int maxHealth;
+        public int MaxHealth
+        {
+            get => maxHealth;
+            set => maxHealth = value;
+        }
+        //the weapon that is currently equipped by player, it originally is his fists
+        public List<Weapon> equippedWeapon = new List<Weapon> { new Fists() };
+
+        public Player(string name, int health) : base(health, 2, name)
+        {
+            maxHealth = health;
         }
 
-        /// <summary>
-        /// Adds an item to the player's inventory.
-        /// </summary>
-        /// <param name="item">The item to be picked up.</param>
-        public void PickUpItem(string item)
+        //Adds an item to the player's inventory.
+        public void PickUpItem(Item item)
         {
-            inventory.Add(item);
-            Console.WriteLine($"{item} has been successfully added to the inventory!");
+            inventory.AddItem(item);
         }
 
-        /// <summary>
-        /// Retrieves the contents of the player's inventory as a comma-separated string.
-        /// </summary>
-        /// <returns>A string representing the player's inventory contents.</returns>
-        public string InventoryContents()
-        {
-            return string.Join(", ", inventory);
-        }
-
-        /// <summary>
-        /// Reduces the player's health when taking damage.
-        /// </summary>
-        /// <param name="damage">The amount of damage taken.</param>
-        public void TakeDamage(int damage)
-        {
-            if (Health - damage > 0)
-                Health -= damage;
-            else
-                Health = 0;
-
-            Console.WriteLine($"You received {damage} damage. Now you have {Health} health.");
-        }
-
-        /// <summary>
-        /// Gets the player's current health.
-        /// </summary>
-        /// <returns>The player's current health.</returns>
-        public int GetHealth()
-        {
-            return Health;
-        }
+        
     }
 }
