@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    public class Creature : IDamageable
+    public abstract class  Creature : IDamageable
     {
         //Creating protected fields, they will be inheritted and used in child classes
         protected int _health;

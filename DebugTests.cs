@@ -43,20 +43,6 @@ namespace DungeonExplorer.Tests
             Debug.Assert(!inventory.contents.Contains(itemToRemove), "Item should be removed from inventory");
         }
 
-        public static void TestCreature()
-        {
-            Creature creature = new Creature(100, 20, "TestPlayer");
-            Debug.Assert(creature != null, "Creature instance should be created successfully");
-            Debug.Assert(creature.Health == 100, "Health should be initialized to 100");
-            Debug.Assert(creature.Attack == 20, "Attack should be initialized to 20");
-            Debug.Assert(creature.Name == "TestPlayer", "Name should be 'TestPlayer'");
-            creature.TakeDamage(30);
-            Debug.Assert(creature.Health == 70, "Health should be 70 after taking 30 damage");
-            creature.TakeDamage(80);
-            Debug.Assert(creature.Health == 0, "Health should be 0 after taking 80 more damage");
-            Debug.Assert(!creature.isAlive, "Creature should be dead when health is 0");
-        }
-
         public static void TestPlayer()
         {
             Player player = new Player("TestPlayer", 100);
@@ -171,7 +157,6 @@ namespace DungeonExplorer.Tests
             SetUp();
             TestGameInitialization();
             TestInventory();
-            TestCreature();
             TestPlayer();
             TestMonster();
             TestRoom();
